@@ -134,7 +134,7 @@ const Atti = () => {
                 <HeaderContent>
                     <HeaderBrand iconAlt="it code circle icon" iconName={logo} >
                         <h2>{istituto.intestazione.toUpperCase()}</h2>
-                        <h3>Albo Pretorio Online</h3>
+                        <h3>Albo Online</h3>
                     </HeaderBrand>
                     <HeaderRightZone>
                         <HeaderSearch iconName="it-search" label="Cerca" onClick={() => toggleModalSearch(!isOpenSearch)} />
@@ -385,7 +385,7 @@ const Atti = () => {
                                                                         {/* <a href="/" target="_blank" aria-label="Visualizza file">
                                                                         <Icon icon="it-password-visible" />
                                                                     </a> */}
-                                                                        <a href={'https://cdn.brcnet.it/file/alboweb/' + codCli + '/' + allegato.path} target="_blank" rel='noopener noreferrer' aria-label="Scarica allegato">
+                                                                        <a href={'https://cdn.myscuola.it/file/alboweb/' + codCli + '/' + allegato.path} target="_blank" rel='noopener noreferrer' aria-label="Scarica allegato">
                                                                             <Icon icon="it-download" />
                                                                         </a>
                                                                     </span>
@@ -425,7 +425,7 @@ const Atti = () => {
                                     <img height={'67px'} src={logo} alt="Stemma Repubblica Italiana" className='me-3' />
                                     <div className="it-brand-text">
                                         <h4 className='fs-4 m-0 p-0'>{istituto.intestazione.toUpperCase()}</h4>
-                                        <h6 className='fs-6 fw-normal m-0 p-0'>Albo Pretorio Online</h6>
+                                        <h6 className='fs-6 fw-normal m-0 p-0'>Albo Online</h6>
                                     </div>
                                 </div>
                             </Col>
