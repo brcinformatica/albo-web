@@ -14,34 +14,20 @@ const Atti = () => {
     const apiUrl = 'https://api.brcnet.it';
     const { codCli } = useParams();
 
+    // Controllo se il parametro è disponibile
+    if (!codCli) {
+        console.error("Codice scuola mancante!");
+        return <div>Errore: codice scuola mancante.</div>;
+    }
+
     // header
     const [isOpenSearch, toggleModalSearch] = useState(false);
     const [istituto, setIstituto] = useState(null);
 
-    useEffect(() => {
-        axios.get(apiUrl + '/api/rest/v1/istituti/anagrafica/' + codCli).then(res => {
-            if (res.data.success) setIstituto(res.data.payload);
-        });
-    }, []);
+    const [isArchivio, toggleArchivio] = useState(false);
 
-    // visite
     const [visite, setVisite] = useState(0);
     const [cookies, setCookie] = useCookies(['brc_wap_visitato']);
-
-    useEffect(() => {
-        axios.get(apiUrl + '/api/rest/v1/wap/visite/' + codCli).then(res => {
-            if (res.data.success) setVisite(res.data.payload);
-        })
-    })
-
-    if (!cookies['brc_wap_visitato']) {
-        axios.post(apiUrl + '/api/rest/v1/wap/addVisita/' + codCli);
-    }
-
-    setCookie('brc_wap_visitato', true, {path: '/' + codCli});
-
-    // atti
-    const [isArchivio, toggleArchivio] = useState(false);
 
     const [descrizione, setDescrizione] = useState(null);
     const [categoria, setCategoria] = useState(null);
@@ -57,7 +43,7 @@ const Atti = () => {
     const [tipologie, setTipologie] = useState(null);
     const [categorie, setCategorie] = useState(null);
 
-    // get post
+    // get atti
     const getAtti = async (archivio = false, dataInizio = null, dataFine = null, categoria = null, tipologia = null, descrizione = null) => {
         axios.post(apiUrl + '/api/rest/v1/wap/atti/' + codCli, {
             page: 0,
@@ -75,23 +61,6 @@ const Atti = () => {
         });
     }
 
-    if (!atti) getAtti();
-
-    // get tipologie
-    useEffect(() => {
-        axios.get(apiUrl + '/api/rest/v1/wap/tipologie/' + codCli).then(res => {
-            if (res.data.success) setTipologie(res.data.payload);
-        });
-    }, []);
-
-
-    // get categorie
-    useEffect(() => {
-        axios.get(apiUrl + '/api/rest/v1/wap/categorie/' + codCli).then(res => {
-            if (res.data.success) setCategorie(res.data.payload);
-        });
-    }, []);
-
     // get allegati
     const getAllegati = async (id) => {
         axios.get(apiUrl + '/api/rest/v1/wap/atti/' + codCli + '/allegati/' + id).then(res => {
@@ -101,6 +70,47 @@ const Atti = () => {
                 setAllegati([]);
         });
     }
+
+    // recupera dati generali della scuola e albo
+    useEffect(() => {
+        // Chiamata a istituto
+        axios.get(apiUrl + '/api/rest/v1/istituti/anagrafica/' + codCli).then(res => {
+            if (res.data.success) setIstituto(res.data.payload);
+        });
+
+        // Chiamata a visite
+        axios.get(apiUrl + '/api/rest/v1/wap/visite/' + codCli).then(res => {
+            if (res.data.success) setVisite(res.data.payload);
+        });
+
+        // Aggiornamento visite (una sola volta)
+        if (!cookies['brc_wap_visitato']) {
+            axios.post(apiUrl + '/api/rest/v1/wap/addVisita/' + codCli)
+                .then(() => setCookie('brc_wap_visitato', true, { path: '/' + codCli }));
+        }
+
+        // Chiamata a tipologie e categorie
+        axios.get(apiUrl + '/api/rest/v1/wap/tipologie/' + codCli).then(res => {
+            if (res.data.success) setTipologie(res.data.payload);
+        });
+
+        axios.get(apiUrl + '/api/rest/v1/wap/categorie/' + codCli).then(res => {
+            if (res.data.success) setCategorie(res.data.payload);
+        });
+
+        // Chiamata iniziale per gli atti
+        getAtti();
+    }, [codCli, cookies, setCookie]);
+
+    // visite
+    useEffect(() => {
+        if (!cookies['brc_wap_visitato']) {
+            axios.post(apiUrl + '/api/rest/v1/wap/addVisita/' + codCli)
+                .then(() => {
+                    setCookie('brc_wap_visitato', true, { path: '/' + codCli });
+                });
+        }
+    }, [cookies, codCli, setCookie]);
 
     // schermata caricamento
     if (!istituto || !atti || !tipologie || !categorie) return (
@@ -450,7 +460,7 @@ const Atti = () => {
                             <Col lg='4' md='4' className="pb-2">
                                 <p>
                                     <strong>Statistiche</strong><br />
-                                    Numero visite: {visite} 
+                                    Numero visite: {visite}
                                 </p>
                             </Col>
                         </Row>
