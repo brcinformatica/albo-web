@@ -9,7 +9,7 @@ import 'typeface-lora';
 import Atti from "./pages/Atti";
 import Errore from "./pages/Errore";
 
-const App = () => {
+function App() {
   return (
     <Routes>
       <Route path="/:codCli" element={<Atti />} />

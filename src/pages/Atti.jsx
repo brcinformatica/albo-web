@@ -5,12 +5,13 @@ import { Header, HeaderContent, HeaderBrand, HeaderRightZone, HeaderSearch, Form
 import Select from 'react-select'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import logo from '../logo-repubblica-italiana.svg';
+import logo from '../assets/logo-repubblica-italiana.svg';
 import CookieConsent from "react-cookie-consent";
 import { useCookies } from 'react-cookie';
 
 const Atti = () => {
-    const apiUrl = process.env.REACT_APP_API_URL;
+    // const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = 'https://api.brcnet.it';
     const { codCli } = useParams();
 
     // header
@@ -113,7 +114,7 @@ const Atti = () => {
 
     // render main page
     return (
-        <>
+        <div>
             <Header theme="" type="slim">
                 <HeaderContent>
                     <HeaderBrand href={istituto.sitoweb} target='_blank' rel='noopener noreferrer'>
@@ -487,7 +488,7 @@ const Atti = () => {
                 Questo sito web utilizza alcuni cookie tecnici necessari al funzionamento del software.
                 Per più informazioni su quali cookies potrebbero essere utilizzati su questa applicazione clicca <a className='text-white' href='https://brcinformatica.it/privacy' target="_blank" rel='noopener noreferrer'>Leggi di più</a>
             </CookieConsent>
-        </>
+        </div>
     )
 }
 
