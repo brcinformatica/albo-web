@@ -22,6 +22,7 @@ const Atti = () => {
 
     // header
     const [isOpenSearch, toggleModalSearch] = useState(false);
+    const [loadingDownloadId, setLoadingDownloadId] = useState(null);
     const [istituto, setIstituto] = useState(null);
 
     const [isArchivio, toggleArchivio] = useState(false);
@@ -396,9 +397,34 @@ const Atti = () => {
                                                                         {/* <a href="/" target="_blank" aria-label="Visualizza file">
                                                                         <Icon icon="it-password-visible" />
                                                                     </a> */}
-                                                                        <a href={'https://cdn.myscuola.it/file/alboweb/' + codCli + '/' + allegato.path} target="_blank" rel='noopener noreferrer' aria-label="Scarica allegato">
-                                                                            <Icon icon="it-download" />
+                                                                        <a
+                                                                            href="#"
+                                                                            onClick={async (e) => {
+                                                                                e.preventDefault();
+                                                                                setLoadingDownloadId(allegato.id);
+                                                                                try {
+                                                                                    const res = await axios.get(`https://cloud.myscuola.it/wap/download_public.php?id=${allegato.id}&cod=${codCli}`);
+                                                                                    if (res.data.success && res.data.payload) {
+                                                                                        window.open(res.data.payload, '_blank');
+                                                                                    } else {
+                                                                                        alert("Impossibile scaricare il file: " + (res.data.error || "Errore sconosciuto"));
+                                                                                    }
+                                                                                } catch (err) {
+                                                                                    alert("Errore durante il download");
+                                                                                    console.error(err);
+                                                                                } finally {
+                                                                                    setLoadingDownloadId(null);
+                                                                                }
+                                                                            }}
+                                                                            aria-label="Scarica allegato"
+                                                                        >
+                                                                            {loadingDownloadId === allegato.id ? (
+                                                                                <Spinner active />
+                                                                            ) : (
+                                                                                <Icon icon="it-download" />
+                                                                            )}
                                                                         </a>
+
                                                                     </span>
                                                                 </div>
                                                             </div>
