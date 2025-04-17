@@ -202,7 +202,7 @@ const Atti = () => {
                                                 <Col xl="10">
                                                     <Row>
                                                         <Col xl="2">
-                                                            <span className={"d-xl-block mt-1 px-4 rounded text-white text-center text-no-break bg-" + (isArchivio ? 'warning' : (atto.annullato == null ? 'success' : 'danger'))}>
+                                                            <span className={"d-xl-block mt-1 px-4 rounded text-white text-center text-no-break bg-" + (isArchivio ? 'warning' : (atto.annullato == 1 ? 'danger' : 'success'))}>
                                                                 {atto.numRegistro}/{new Date(atto.dataPubblicazione).getFullYear()}
                                                             </span>
                                                         </Col>
@@ -338,7 +338,7 @@ const Atti = () => {
                         <Row>
                             <Col lg="6" className="mb-1">
                                 <Icon icon="it-horn" size="sm" />
-                                <strong>Stato:</strong> {'archivio' == 'archivioo' ? 'Archiviato' : (atto.annullato == null ? 'Pubblicato' : 'Annullato')}
+                                <strong>Stato:</strong> {'archivio' == 'archivioo' ? 'Archiviato' : (atto.annullato == 1 ? 'Annullato' : 'Pubblicato')}
                             </Col>
                             <Col lg="6" className="mb-1">
                                 <Icon icon="it-info-circle" size="sm" />
