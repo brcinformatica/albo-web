@@ -321,7 +321,7 @@ const Atti = () => {
 
                 <Modal isOpen={isOpen} toggle={() => toggleModal(!isOpen)} size='xl' labelledBy='modalAtto'>
                     <ModalHeader toggle={() => toggleModal(!isOpen)} id='modalAtto'>
-                        <span className={"me-3 px-4 rounded text-white text-center text-no-break bg-" + (isArchivio ? 'warning' : (atto.annullato == null ? 'success' : 'danger'))}>
+                        <span className={"me-3 px-4 rounded text-white text-center text-no-break bg-" + (isArchivio ? 'warning' : (atto.annullato == 1 ? 'danger' : 'success'))}>
                             {atto.numRegistro}/{new Date(atto.dataPubblicazione).getFullYear()}
                         </span>
                         {atto.descrizione}
