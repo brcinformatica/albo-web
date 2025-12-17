@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 
 const Atti = () => {
     // const apiUrl = process.env.REACT_APP_API_URL;
-    const apiUrl = 'https://api.brcnet.it';
+    const apiUrl = 'https://api.myscuola.it';
     const { codCli } = useParams();
 
     // Controllo se il parametro è disponibile
