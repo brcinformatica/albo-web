@@ -1,2 +1,5 @@
 [phases.setup]
-nixPkgs = ['nodejs_20']
+nixPkgs = ['nodejs_20', 'yarn']
+
+[phases.build]
+cmds = ['npm run build']
